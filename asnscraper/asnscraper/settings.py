@@ -19,9 +19,8 @@
 
 BOT_NAME = 'asnscraper'
 
-SPIDER_MODULES = ['asnscraper.spiders']
-NEWSPIDER_MODULE = 'asnscraper.spiders'
-
+#SPIDER_MODULES = ['asnscraper.spiders']
+#NEWSPIDER_MODULE = 'asnscraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'teste (+http://www.yourdomain.com)'
@@ -75,7 +74,7 @@ TELNETCONSOLE_ENABLED = False
 ITEM_PIPELINES = {
  'asnscraper.pipelines.AirportPipeline': 200,
  'asnscraper.pipelines.DisasterPipeline': 300,
- 'asnscraper.pipelines.ExportPipeline': 1000,
+ 'asnscraper.pipelines.ExportPipeline': 1000
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

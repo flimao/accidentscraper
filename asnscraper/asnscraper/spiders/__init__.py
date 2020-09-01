@@ -9,5 +9,4 @@
 # Embedded file name: C:\Users\bdzp\Pessoal\programacao\python\projetos\asn-scraper\asnscraper\asnscraper\spiders\__init__.py
 # Compiled at: 2019-11-20 05:10:16
 # Size of source mod 2**32: 161 bytes
-pass
 # okay decompiling __pycache__\__init__.cpython-38.pyc

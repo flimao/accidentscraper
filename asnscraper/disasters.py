@@ -7,11 +7,14 @@
 from datetime import datetime as dt
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
+from asnscraper import settings
 from asnscraper.items import DisasterRaw, AirportRaw
 import re
-RE_LISTING = '.*/dblist\\.php\\?(Year)=(1920|2017)$'
-RE_RECORD = '.*/record\\.php\\?id=((\\d{8})-(\\d+))$'
-RE_AIRPORT = '.*/airport\\.php\\?id=(\\w+)$'
+
+
+RE_LISTING = r'.*/dblist\.php\?(Year)=(1920)$'
+RE_RECORD = r'.*/record\.php\?id=((\d{8})-(\d+))$'
+RE_AIRPORT = r'.*/airport\.php\?id=(\w+)$'
 
 
 class DisasterSpider(CrawlSpider):
@@ -19,9 +22,10 @@ class DisasterSpider(CrawlSpider):
     allowed_domains = ['aviation-safety.net']
     start_urls = ['https://aviation-safety.net/database/']
     rules = [
-     Rule(LinkExtractor(allow=RE_LISTING), callback='parse_list', follow=True),
-     Rule(LinkExtractor(allow=RE_RECORD), callback='parse_record', follow=True),
-     Rule(LinkExtractor(allow=RE_AIRPORT), callback='parse_airport', follow=False)]
+        Rule(LinkExtractor(allow=RE_LISTING), callback='parse_list', follow=True),
+        Rule(LinkExtractor(allow=RE_RECORD), callback='parse_record', follow=True),
+        Rule(LinkExtractor(allow=RE_AIRPORT), callback='parse_airport', follow=False)
+    ]
 
     @staticmethod
     def parse_list(response):

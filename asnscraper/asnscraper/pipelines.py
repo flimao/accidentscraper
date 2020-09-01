@@ -15,15 +15,15 @@
 import os.path
 from datetime import timedelta as td
 from scrapy.exporters import CsvItemExporter
+from scrapy.exceptions import DropItem
 from asnscraper.items import Disaster, DisasterRaw, Airport, AirportRaw
 import re
 
-DATADIR = '..\\data'
+DATADIR = r'..\data'
 
 
-class ExportPipeline(object):
-    dbs = [
-     Airport, Disaster]
+class ExportPipeline:
+    dbs = [Airport, Disaster]
     exporters = {}
 
     @staticmethod
@@ -55,14 +55,14 @@ class ExportPipeline(object):
             if isinstance(item, db):
                 db_name = self.dbname(db)
                 self.exporters[db_name].export_item(item)
+                print(f'ExportPipeline in {db_name}: {item}')
         else:
-            return item
+            raise DropItem
 
 
-class AirportPipeline(object):
+class AirportPipeline:
 
-    @staticmethod
-    def process_item(raw, spider):
+    def process_item(self, raw, spider):
         if not isinstance(raw, AirportRaw):
             return raw
         # df = raw['allfields']
@@ -72,10 +72,9 @@ class AirportPipeline(object):
         return airport
 
 
-class DisasterPipeline(object):
+class DisasterPipeline:
 
-    @staticmethod
-    def process_item(raw, spider):
+    def process_item(self, raw, spider):
         if not isinstance(raw, DisasterRaw):
             return raw
         df = raw['allfields']
@@ -83,7 +82,7 @@ class DisasterPipeline(object):
         disaster['id'] = raw['id']
         timestr = extract_field(field='Time', df=df)
         try:
-            hours, minutes = re.match('(\\d\\d):(\\d\\d)', timestr).groups()
+            hours, minutes = re.match(r'(\d\d):(\d\d)', timestr).groups()
         except (AttributeError, TypeError):
             hours, minutes = (0, 0)
         finally:
@@ -126,7 +125,7 @@ def fatalities(field, df):
     fstr = extract_field(field=field, df=df)
     if fstr is None:
         return
-    fatal = re.match('.*[Ff]atalities:\\s*(\\d*)\\s*/\\s*[Oo]ccupants:\\s*(\\d*).*', fstr)
+    fatal = re.match(r'.*[Ff]atalities:\s*(\d*)\s*/\s*[Oo]ccupants:\s*(\d*).*', fstr)
     f_deaths = int(fatal[1]) if fatal[1] != '' else None
     f_total = int(fatal[2]) if fatal[2] != '' else None
     return (
@@ -137,7 +136,7 @@ def fatalities_ground(df):
     fstr = extract_field(field='Ground casualties', df=df)
     if fstr is None:
         return
-    fatal = re.match('.*[Ff]atalities:\\s*(\\d*)\\s*.*', fstr)
+    fatal = re.match(r'.*[Ff]atalities:\s*(\d*)\s*.*', fstr)
     if fatal is None:
         return
     f_deaths = int(fatal[1]) if fatal[1] != '' else None
