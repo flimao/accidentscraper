@@ -13,6 +13,7 @@ RE_LISTING = '.*/dblist\\.php\\?(Year)=(1920|2017)$'
 RE_RECORD = '.*/record\\.php\\?id=((\\d{8})-(\\d+))$'
 RE_AIRPORT = '.*/airport\\.php\\?id=(\\w+)$'
 
+
 class DisasterSpider(CrawlSpider):
     name = 'disasters'
     allowed_domains = ['aviation-safety.net']
@@ -22,11 +23,13 @@ class DisasterSpider(CrawlSpider):
      Rule(LinkExtractor(allow=RE_RECORD), callback='parse_record', follow=True),
      Rule(LinkExtractor(allow=RE_AIRPORT), callback='parse_airport', follow=False)]
 
-    def parse_list(self, response):
+    @staticmethod
+    def parse_list(response):
         m = re.match(RE_LISTING, response.url)
         print(f"This is a database listing WHERE '{m[1]}' = '{m[2]}'")
 
-    def parse_airport(self, response):
+    @staticmethod
+    def parse_airport(response):
         id = re.match(RE_AIRPORT, response.url)
         airportraw = AirportRaw()
         airportfields = response.xpath("//a[@name='general']/div[@class='infobox']//table[1]//tr")
@@ -36,7 +39,8 @@ class DisasterSpider(CrawlSpider):
         airportraw['allfields'] = airportfields
         return airportraw
 
-    def parse_record(self, response):
+    @staticmethod
+    def parse_record(response):
         id = re.match(RE_RECORD, response.url)
         disasterraw = DisasterRaw()
         disasterfields = response.xpath("//div[@class='innertube']//table[1]//tr")

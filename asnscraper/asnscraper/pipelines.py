@@ -1,26 +1,38 @@
+# -*- coding: utf-8 -*-
+
+# Define your item pipelines here
+#
+# Don't forget to add your pipeline to the ITEM_PIPELINES setting
+# See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+
 # decompyle3 version 3.3.2
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\asnscraper\pipelines.py
 # Compiled at: 2020-08-25 23:10:47
 # Size of source mod 2**32: 4778 bytes
+
 import os.path
 from datetime import timedelta as td
 from scrapy.exporters import CsvItemExporter
 from asnscraper.items import Disaster, DisasterRaw, Airport, AirportRaw
 import re
+
 DATADIR = '..\\data'
+
 
 class ExportPipeline(object):
     dbs = [
      Airport, Disaster]
     exporters = {}
 
-    def dbname(self, db):
+    @staticmethod
+    def dbname(db):
         return db.__name__.lower()
 
-    def file_path(self, file, dir=DATADIR):
-        return os.path.abspath(os.path.join(dir, file))
+    @staticmethod
+    def file_path(file, folder = DATADIR):
+        return os.path.abspath(os.path.join(folder, file))
 
     def open_spider(self, spider):
         for db in self.dbs:
@@ -30,9 +42,13 @@ class ExportPipeline(object):
             e.start_exporting()
             self.exporters[db_name] = e
 
+        return spider
+
     def close_spider(self, spider):
         for e in self.exporters.values():
             e.finish_exporting()
+
+        return spider
 
     def process_item(self, item, spider):
         for db in self.dbs:
@@ -45,10 +61,11 @@ class ExportPipeline(object):
 
 class AirportPipeline(object):
 
-    def process_item(self, raw, spider):
+    @staticmethod
+    def process_item(raw, spider):
         if not isinstance(raw, AirportRaw):
             return raw
-        df = raw['allfields']
+        # df = raw['allfields']
         airport = Airport()
         airport['id'] = raw['id']
         airport['name'] = raw['name'].extract()[0].strip()
@@ -57,7 +74,8 @@ class AirportPipeline(object):
 
 class DisasterPipeline(object):
 
-    def process_item(self, raw, spider):
+    @staticmethod
+    def process_item(raw, spider):
         if not isinstance(raw, DisasterRaw):
             return raw
         df = raw['allfields']
@@ -73,7 +91,8 @@ class DisasterPipeline(object):
             total_dt = raw['date'] + deltat
             disaster['datetime'] = total_dt
             disaster['crew_deaths'], disaster['crew_total'] = fatalities('Crew', df=df)
-            disaster['passenger_deaths'], disaster['passenger_total'] = fatalities('Passengers', df=df)
+            disaster['passenger_deaths'], disaster['passenger_total'] = \
+                fatalities('Passengers', df=df)
             disaster['souls_deaths'], disaster['souls_total'] = fatalities('Total', df=df)
             disaster['ground_deaths'] = fatalities_ground(df=df)
             disaster['damage'] = extract_field(field='Aircraft damage', df=df)

@@ -1,3 +1,8 @@
+# This package will contain the spiders of your Scrapy project
+#
+# Please refer to the documentation for information on how to create and manage
+# your spiders.
+
 # decompyle3 version 3.3.2
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]

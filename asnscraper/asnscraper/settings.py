@@ -1,26 +1,102 @@
+# -*- coding: utf-8 -*-
+
+# Scrapy settings for teste project
+#
+# For simplicity, this file contains only settings considered important or
+# commonly used. You can find more settings consulting the documentation:
+#
+#     https://doc.scrapy.org/en/latest/topics/settings.html
+#     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
+#     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+
 # decompyle3 version 3.3.2
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
-# Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\asnscraper\settings.py
+# Embedded file name:
+#   C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\asnscraper\settings.py
 # Compiled at: 2020-08-25 22:39:49
 # Size of source mod 2**32: 3206 bytes
+
 BOT_NAME = 'asnscraper'
-SPIDER_MODULES = [
- 'asnscraper.spiders']
+
+SPIDER_MODULES = ['asnscraper.spiders']
 NEWSPIDER_MODULE = 'asnscraper.spiders'
+
+
+# Crawl responsibly by identifying yourself (and your website) on the user-agent
+#USER_AGENT = 'teste (+http://www.yourdomain.com)'
+
+# Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+
+# Configure maximum concurrent requests performed by Scrapy (default: 16)
+#CONCURRENT_REQUESTS = 32
+
+# Configure a delay for requests for the same website (default: 0)
+# See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
+# See also autothrottle settings and docs
+#DOWNLOAD_DELAY = 3
+# The download delay setting will honor only one of:
+#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+#CONCURRENT_REQUESTS_PER_IP = 16
+
+# Disable cookies (enabled by default)
+#COOKIES_ENABLED = False
+
+# Disable Telnet Console (enabled by default)
 TELNETCONSOLE_ENABLED = False
-ITEM_PIPELINES = {'asnscraper.pipelines.AirportPipeline':200, 
- 'asnscraper.pipelines.DisasterPipeline':300, 
- 'asnscraper.pipelines.ExportPipeline':1000}
+
+# Override the default request headers:
+#DEFAULT_REQUEST_HEADERS = {
+#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+#   'Accept-Language': 'en',
+#}
+
+# Enable or disable spider middlewares
+# See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+#SPIDER_MIDDLEWARES = {
+#    'teste.middlewares.TesteSpiderMiddleware': 543,
+#}
+
+# Enable or disable downloader middlewares
+# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
+#DOWNLOADER_MIDDLEWARES = {
+#    'teste.middlewares.TesteDownloaderMiddleware': 543,
+#}
+
+# Enable or disable extensions
+# See https://doc.scrapy.org/en/latest/topics/extensions.html
+#EXTENSIONS = {
+#    'scrapy.extensions.telnet.TelnetConsole': None,
+#}
+
+# Configure item pipelines
+# See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+ 'asnscraper.pipelines.AirportPipeline': 200,
+ 'asnscraper.pipelines.DisasterPipeline': 300,
+ 'asnscraper.pipelines.ExportPipeline': 1000,
+}
+
+# Enable and configure the AutoThrottle extension (disabled by default)
+# See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 AUTOTHROTTLE_ENABLED = True
+# The initial download delay
 AUTOTHROTTLE_START_DELAY = 3
+# The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY = 30
+# The average number of requests Scrapy should be sending in parallel to
+# each remote server
 AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+# Enable showing throttling stats for every response received:
 AUTOTHROTTLE_DEBUG = True
+
+# Enable and configure HTTP caching (disabled by default)
+# See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
 HTTPCACHE_ENABLED = True
-HTTPCACHE_EXPIRATION_SECS = 2592000
+HTTPCACHE_EXPIRATION_SECS = 30*24*60*60
 HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
 # okay decompiling __pycache__\settings.cpython-38.pyc

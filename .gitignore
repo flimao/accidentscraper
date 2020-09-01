@@ -157,4 +157,5 @@ teste-pymc*.py
 
 # other
 test.py
+teste/
 secrets.py

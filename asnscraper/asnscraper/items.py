@@ -1,10 +1,19 @@
+# -*- coding: utf-8 -*-
+
+# Define here the models for your scraped items
+#
+# See documentation in:
+# https://doc.scrapy.org/en/latest/topics/items.html
+
 # decompyle3 version 3.3.2
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\asnscraper\items.py
 # Compiled at: 2020-08-25 22:16:21
 # Size of source mod 2**32: 1467 bytes
+
 import scrapy
+
 
 class DisasterRaw(scrapy.Item):
     id = scrapy.Field()
