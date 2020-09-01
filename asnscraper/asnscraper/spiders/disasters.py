@@ -7,7 +7,6 @@
 from datetime import datetime as dt
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from asnscraper import settings
 from asnscraper.items import DisasterRaw, AirportRaw
 import re
 
@@ -30,7 +29,7 @@ class DisasterSpider(CrawlSpider):
     @staticmethod
     def parse_list(response):
         m = re.match(RE_LISTING, response.url)
-        print(f"This is a database listing WHERE '{m[1]}' = '{m[2]}'")
+        print(f"Database listing WHERE '{m[1]}' = '{m[2]}'")
 
     @staticmethod
     def parse_airport(response):
@@ -41,6 +40,7 @@ class DisasterSpider(CrawlSpider):
         airportraw['id'] = id[1]
         airportraw['name'] = airportname
         airportraw['allfields'] = airportfields
+        print(f"Airport listing WHERE 'id' = '{airportraw['id']}'")
         return airportraw
 
     @staticmethod
@@ -51,5 +51,6 @@ class DisasterSpider(CrawlSpider):
         disasterraw['id'] = id[1]
         disasterraw['date'] = dt.strptime(id[2], '%Y%m%d')
         disasterraw['allfields'] = disasterfields
+        print(f"Acident listing WHERE 'id' = '{disasterraw['id']}'")
         return disasterraw
 # okay decompiling __pycache__\disasters.cpython-38.pyc

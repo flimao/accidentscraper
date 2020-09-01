@@ -17,6 +17,7 @@ from datetime import timedelta as td
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
 from asnscraper.items import Disaster, DisasterRaw, Airport, AirportRaw
+
 import re
 
 DATADIR = r'..\data'
@@ -35,17 +36,18 @@ class ExportPipeline:
         return os.path.abspath(os.path.join(folder, file))
 
     def open_spider(self, spider):
+
         for db in self.dbs:
             db_name = self.dbname(db)
-            f = open(self.file_path(f"{db_name}s.csv"), 'wb')
-            e = CsvItemExporter(f)
-            e.start_exporting()
+            print(f"Exporting {db_name}s to {db_name}s.csv")
+            e = CsvItemExporter(open(self.file_path(f"{db_name}s.csv"), 'wb'))
             self.exporters[db_name] = e
+            self.exporters[db_name].start_exporting()
 
         return spider
 
     def close_spider(self, spider):
-        for e in self.exporters.values():
+        for k, e in self.exporters.items():
             e.finish_exporting()
 
         return spider
@@ -54,10 +56,9 @@ class ExportPipeline:
         for db in self.dbs:
             if isinstance(item, db):
                 db_name = self.dbname(db)
+                e = self.exporters[db_name]
                 self.exporters[db_name].export_item(item)
-                print(f'ExportPipeline in {db_name}: {item}')
-        else:
-            raise DropItem
+        return item
 
 
 class AirportPipeline:

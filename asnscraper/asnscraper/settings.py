@@ -19,7 +19,7 @@
 
 BOT_NAME = 'asnscraper'
 
-#SPIDER_MODULES = ['asnscraper.spiders']
+SPIDER_MODULES = ['asnscraper.spiders']
 #NEWSPIDER_MODULE = 'asnscraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -88,7 +88,7 @@ AUTOTHROTTLE_MAX_DELAY = 30
 # each remote server
 AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
-AUTOTHROTTLE_DEBUG = True
+AUTOTHROTTLE_DEBUG = False
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
@@ -97,5 +97,9 @@ HTTPCACHE_EXPIRATION_SECS = 30*24*60*60
 HTTPCACHE_DIR = 'httpcache'
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# Logging stuff
+#LOG_ENABLED = False
+LOG_LEVEL = 'WARNING'
 
 # okay decompiling __pycache__\settings.cpython-38.pyc
