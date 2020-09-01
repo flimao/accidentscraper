@@ -159,3 +159,4 @@ teste-pymc*.py
 test.py
 teste/
 secrets.py
+runscraper.bat
