@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-from datetime import timedelta as td
+from datetime import datetime as dt, timedelta as td
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
 from accidents.items import Disaster, ASNDisasterRaw, PlaneCrashDisasterRaw, Airport, AirportRaw
@@ -68,6 +68,7 @@ class ASNDisasterPipeline:
             return raw
         df = raw['allfields']
         disaster = Disaster()
+        disaster['source'] = 'asn'
         disaster['id'] = raw['id']
         timestr = self.extract_field(field='Time', df=df)
         try:
@@ -129,14 +130,57 @@ class ASNDisasterPipeline:
         f_deaths = int(fatal[1]) if fatal[1] != '' else None
         return f_deaths
 
+
 class PlaneCrashDisasterPipeline:
+
+    pat_rem_nonwords = re.compile(r'[^\w]')
 
     def process_item(self, raw, spider):
         if not isinstance(raw, PlaneCrashDisasterRaw):
             return raw
 
-        return raw
+        dtbl = self.build_dict(raw['allfields'])
+        pcd = Disaster()
+        pcd['source'] = 'planecrashinfo'
 
-    @staticmethod
-    def extract_field(field, df):
-        pass
+        pcd['id'] = raw['id']
+
+        # date
+        try:
+            pcdate = dt.strptime(self.extract_field('date', dtbl), r'%B %d, %Y')
+            pcd['datetime'] = pcdate
+        except ValueError:  # not in the specified format
+            pass
+
+        try:
+            militarytime = dt.strptime(self.extract_field('time', dtbl), r'%H%M')
+            hours = militarytime.hour
+            minutes = militarytime.minute
+        except (AttributeError, TypeError, ValueError):
+            hours, minutes = (0, 0)
+
+        delta = td(hours=hours, minutes=minutes)
+        pcd['datetime'] += delta
+
+        # other attributes
+        for f_db, f_pc in zip(['location', 'operator', 'flightnumber', 'route', 'type', 'aircraft', 'summary'],
+                             [None, None, 'flight#', None, 'actype', 'registration', None]):
+            if f_pc is None:
+                f_pc = f_db
+
+            pcd[f_db] = self.extract_field(f_pc, dtbl)
+
+        return pcd
+
+    def build_dict(self, allfields):
+        d = {}
+        for f in allfields:
+            lraw, a = f.xpath(r'td//text()').extract()
+            l = self.pat_rem_nonwords.sub('',lraw[:-1].lower())
+            d[l] = a.strip()
+
+        return d
+
+    def extract_field(self, field, dtbl):
+        fn = self.pat_rem_nonwords.sub('', field)
+        return dtbl[fn]

@@ -7,8 +7,12 @@ from accidents.items import PlaneCrashDisasterRaw
 import re
 
 
-RE_LISTING = r'.*/(1920)/\1\.html?.*'
-RE_RECORD = r'.*/(\d{4})/(\1-\d{1,10})\.html?.*'
+RE_LISTING_PAT = r'.*/(1920)/\1\.html?.*'
+RE_RECORD_PAT = r'.*/(\d{4})/(\1-\d{1,10})\.html?.*'
+#RE_RECORD_PAT = r'.*/(\d{4})/(\1-1)\.html?.*'  # testing only
+
+RE_LISTING = re.compile(RE_LISTING_PAT)
+RE_RECORD = re.compile(RE_RECORD_PAT)
 
 
 class PlaneCrashSpider(CrawlSpider):
@@ -22,17 +26,17 @@ class PlaneCrashSpider(CrawlSpider):
 
     @staticmethod
     def parse_list(response):
-        m = re.match(RE_LISTING, response.url)
+        m = RE_LISTING.match(response.url)
         print(f"Database listing WHERE 'year' = '{m[1]}' (url = '{response.url}')")
 
     @staticmethod
     def parse_record(response):
-        id = re.match(RE_RECORD, response.url)
+        id = RE_RECORD.match(response.url)
         disasterraw = PlaneCrashDisasterRaw()
 
         disasterfields = response.xpath("//table//tr")[1:]
         disasterraw['id'] = id[2]
         disasterraw['date'] = dt.strptime(id[1], '%Y')
         disasterraw['allfields'] = disasterfields
-        print(f"Accident listing WHERE 'id' = '{disasterraw['id']}'")
+        print(f"Accident listing WHERE 'id' = '{disasterraw['id']}' (url = '{response.url}')")
         return disasterraw
