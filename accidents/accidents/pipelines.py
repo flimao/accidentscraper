@@ -4,7 +4,7 @@ import os.path
 from datetime import timedelta as td
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
-from accidents.items import Disaster, DisasterRaw, Airport, AirportRaw
+from accidents.items import Disaster, ASNDisasterRaw, PlaneCrashDisasterRaw, Airport, AirportRaw
 
 import re
 
@@ -61,10 +61,10 @@ class AirportPipeline:
         return airport
 
 
-class DisasterPipeline:
+class ASNDisasterPipeline:
 
     def process_item(self, raw, spider):
-        if not isinstance(raw, DisasterRaw):
+        if not isinstance(raw, ASNDisasterRaw):
             return raw
         df = raw['allfields']
         disaster = Disaster()

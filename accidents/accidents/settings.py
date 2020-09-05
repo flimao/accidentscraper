@@ -56,7 +56,7 @@ TELNETCONSOLE_ENABLED = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
  'accidents.pipelines.AirportPipeline': 200,
- 'accidents.pipelines.DisasterPipeline': 300,
+ 'accidents.pipelines.ASNDisasterPipeline': 300,
  'accidents.pipelines.ExportPipeline': 1000
 }
 

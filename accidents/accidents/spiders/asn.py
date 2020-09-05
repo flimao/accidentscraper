@@ -3,7 +3,7 @@
 from datetime import datetime as dt
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from accidents.items import DisasterRaw, AirportRaw
+from accidents.items import ASNDisasterRaw, AirportRaw
 import re
 
 
@@ -13,7 +13,7 @@ RE_AIRPORT = r'.*/airport\.php\?id=(\w+)$'
 
 
 class ASNSpider(CrawlSpider):
-    name = 'disasters'
+    name = 'asn'
     allowed_domains = ['aviation-safety.net']
     start_urls = ['https://aviation-safety.net/database/']
     rules = [
@@ -42,10 +42,10 @@ class ASNSpider(CrawlSpider):
     @staticmethod
     def parse_record(response):
         id = re.match(RE_RECORD, response.url)
-        disasterraw = DisasterRaw()
+        disasterraw = ASNDisasterRaw()
         disasterfields = response.xpath("//div[@class='innertube']//table[1]//tr")
         disasterraw['id'] = id[1]
         disasterraw['date'] = dt.strptime(id[2], '%Y%m%d')
         disasterraw['allfields'] = disasterfields
-        print(f"Acident listing WHERE 'id' = '{disasterraw['id']}'")
+        print(f"Accident listing WHERE 'id' = '{disasterraw['id']}'")
         return disasterraw

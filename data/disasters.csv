@@ -1,5 +1,0 @@
-aircraft,ap_from,ap_to,crew_deaths,crew_total,damage,datetime,fate,flightnumber,flightphase,ground_deaths,id,location,narrative,nature,operator,passenger_deaths,passenger_total,souls_deaths,souls_total,type
-G-EAMA,"London-Cricklewood Aerodrome, United Kingdom","Paris-Le Bourget Airport (LBG/LFPB), France",2,2,Damaged beyond repair,1920-12-14 00:00:00,,,Initial climb (ICL),,19201214-0,Golders Green (   United Kingdom),,International Scheduled Passenger,,2,6,4,8,
-G-EAKE,"Stockholm (unknown airport), Sweden","Kjeller Air Base (ENKJ), Norway",0,2,Damaged beyond repair,1920-06-30 00:00:00,,,En route (ENR),,19200630-0,Östanå (   Sweden),,Demonstration,,0,0,0,2,
-G-EAMC,"Aswan Airport (ASW/HESN), Egypt","Khartoum-Civil Airport (KRT/HSSS), Sudan",0,4,Damaged beyond repair,1920-02-25 00:00:00,,,Unknown (UNK),,19200225-0,10 km (6.3 mls) N of El Shereik (   Sudan),,Unknown,,0,0,0,4,
-G-EANV,?,?,0,,Damaged beyond repair,1920-02-23 00:00:00,,,En route (ENR),,19200223-0,"Acadia Siding, Cape Province (   South Africa)",,Domestic Scheduled Passenger,,0,,0,10,

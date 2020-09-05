@@ -11,6 +11,14 @@ class DisasterRaw(scrapy.Item):
     ap_to = scrapy.Field()
 
 
+class ASNDisasterRaw(DisasterRaw):
+    pass
+
+
+class PlaneCrashDisasterRaw(DisasterRaw):
+    pass
+
+
 class Disaster(scrapy.Item):
     id = scrapy.Field()
     source = scrapy.Field()
