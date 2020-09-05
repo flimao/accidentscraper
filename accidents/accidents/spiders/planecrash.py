@@ -29,8 +29,8 @@ class PlaneCrashSpider(CrawlSpider):
     def parse_record(response):
         id = re.match(RE_RECORD, response.url)
         disasterraw = PlaneCrashDisasterRaw()
+
         disasterfields = response.xpath("//table//tr")[1:]
-        print(id.groups())
         disasterraw['id'] = id[2]
         disasterraw['date'] = dt.strptime(id[1], '%Y')
         disasterraw['allfields'] = disasterfields

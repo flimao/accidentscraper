@@ -57,6 +57,7 @@ TELNETCONSOLE_ENABLED = False
 ITEM_PIPELINES = {
  'accidents.pipelines.AirportPipeline': 200,
  'accidents.pipelines.ASNDisasterPipeline': 300,
+ 'accidents.pipelines.PlaneCrashDisasterPipeline': 301,
  'accidents.pipelines.ExportPipeline': 1000
 }
 

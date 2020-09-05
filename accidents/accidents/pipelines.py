@@ -69,7 +69,7 @@ class ASNDisasterPipeline:
         df = raw['allfields']
         disaster = Disaster()
         disaster['id'] = raw['id']
-        timestr = extract_field(field='Time', df=df)
+        timestr = self.extract_field(field='Time', df=df)
         try:
             hours, minutes = re.match(r'(\d\d):(\d\d)', timestr).groups()
         except (AttributeError, TypeError):
@@ -78,55 +78,65 @@ class ASNDisasterPipeline:
             deltat = td(hours=(int(hours)), minutes=(int(minutes)))
             total_dt = raw['date'] + deltat
             disaster['datetime'] = total_dt
-            disaster['crew_deaths'], disaster['crew_total'] = fatalities('Crew', df=df)
+            disaster['crew_deaths'], disaster['crew_total'] = self.fatalities('Crew', df=df)
             disaster['passenger_deaths'], disaster['passenger_total'] = \
-                fatalities('Passengers', df=df)
-            disaster['souls_deaths'], disaster['souls_total'] = fatalities('Total', df=df)
-            disaster['ground_deaths'] = fatalities_ground(df=df)
-            disaster['damage'] = extract_field(field='Aircraft damage', df=df)
-            disaster['fate'] = extract_field(field='Aircraft fate', df=df)
-            disaster['aircraft'] = extract_field(field='Registration', df=df)
-            disaster['location'] = extract_field(field='Location', df=df)
-            disaster['flightphase'] = extract_field(field='Phase', df=df)
-            disaster['nature'] = extract_field(field='Nature', df=df)
-            disaster['ap_from'] = extract_field(field='Departure airport', df=df)
-            disaster['ap_to'] = extract_field(field='Destination airport', df=df)
-            disaster['flightnumber'] = extract_field(field='Flightnumber', df=df)
+                self.fatalities('Passengers', df=df)
+            disaster['souls_deaths'], disaster['souls_total'] = self.fatalities('Total', df=df)
+            disaster['ground_deaths'] = self.fatalities_ground(df=df)
+            disaster['damage'] = self.extract_field(field='Aircraft damage', df=df)
+            disaster['fate'] = self.extract_field(field='Aircraft fate', df=df)
+            disaster['aircraft'] = self.extract_field(field='Registration', df=df)
+            disaster['location'] = self.extract_field(field='Location', df=df)
+            disaster['flightphase'] = self.extract_field(field='Phase', df=df)
+            disaster['nature'] = self.extract_field(field='Nature', df=df)
+            disaster['ap_from'] = self.extract_field(field='Departure airport', df=df)
+            disaster['ap_to'] = self.extract_field(field='Destination airport', df=df)
+            disaster['flightnumber'] = self.extract_field(field='Flightnumber', df=df)
             return disaster
 
+    @staticmethod
+    def extract_field(field, df):
+        query = f'td[@class="caption" and text()="{field}:"]/following-sibling::td//text()'
+        query2 = f'td[@class="caption"]//*[text()="{field}:"]/' \
+                 f'ancestor::td/following-sibling::td//text()'
+        ret = df.xpath(query).extract() or df.xpath(query2).extract()
+        if isinstance(ret, list):
+            if len(ret) == 0:
+                return
+            ret = [str(r) for r in ret]
+            return ''.join(ret).strip()
+        if isinstance(ret, str):
+            return ret.strip()
+        return ret
 
-def extract_field(field, df):
-    query = f'td[@class="caption" and text()="{field}:"]/following-sibling::td//text()'
-    query2 = f'td[@class="caption"]//*[text()="{field}:"]/' \
-             f'ancestor::td/following-sibling::td//text()'
-    ret = df.xpath(query).extract() or df.xpath(query2).extract()
-    if isinstance(ret, list):
-        if len(ret) == 0:
+    def fatalities(self, field, df):
+        fstr = self.extract_field(field=field, df=df)
+        if fstr is None:
             return
-        ret = [str(r) for r in ret]
-        return ''.join(ret).strip()
-    if isinstance(ret, str):
-        return ret.strip()
-    return ret
+        fatal = re.match(r'.*[Ff]atalities:\s*(\d*)\s*/\s*[Oo]ccupants:\s*(\d*).*', fstr)
+        f_deaths = int(fatal[1]) if fatal[1] != '' else None
+        f_total = int(fatal[2]) if fatal[2] != '' else None
+        return (
+         f_deaths, f_total)
 
+    def fatalities_ground(self, df):
+        fstr = self.extract_field(field='Ground casualties', df=df)
+        if fstr is None:
+            return
+        fatal = re.match(r'.*[Ff]atalities:\s*(\d*)\s*.*', fstr)
+        if fatal is None:
+            return
+        f_deaths = int(fatal[1]) if fatal[1] != '' else None
+        return f_deaths
 
-def fatalities(field, df):
-    fstr = extract_field(field=field, df=df)
-    if fstr is None:
-        return
-    fatal = re.match(r'.*[Ff]atalities:\s*(\d*)\s*/\s*[Oo]ccupants:\s*(\d*).*', fstr)
-    f_deaths = int(fatal[1]) if fatal[1] != '' else None
-    f_total = int(fatal[2]) if fatal[2] != '' else None
-    return (
-     f_deaths, f_total)
+class PlaneCrashDisasterPipeline:
 
+    def process_item(self, raw, spider):
+        if not isinstance(raw, PlaneCrashDisasterRaw):
+            return raw
 
-def fatalities_ground(df):
-    fstr = extract_field(field='Ground casualties', df=df)
-    if fstr is None:
-        return
-    fatal = re.match(r'.*[Ff]atalities:\s*(\d*)\s*.*', fstr)
-    if fatal is None:
-        return
-    f_deaths = int(fatal[1]) if fatal[1] != '' else None
-    return f_deaths
+        return raw
+
+    @staticmethod
+    def extract_field(field, df):
+        pass
