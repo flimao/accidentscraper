@@ -1,13 +1,13 @@
 # decompyle3 version 3.3.2
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
-# Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\disasters.py
+# Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\accidents\disasters.py
 # Compiled at: 2020-08-25 22:14:27
 # Size of source mod 2**32: 1919 bytes
 from datetime import datetime as dt
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from asnscraper.items import DisasterRaw, AirportRaw
+from accidents.items import DisasterRaw, AirportRaw
 import re
 
 

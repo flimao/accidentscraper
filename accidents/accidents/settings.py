@@ -13,14 +13,14 @@
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
 # Embedded file name:
-#   C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\asnscraper\settings.py
+#   C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\accidents\accidents\settings.py
 # Compiled at: 2020-08-25 22:39:49
 # Size of source mod 2**32: 3206 bytes
 
-BOT_NAME = 'asnscraper'
+BOT_NAME = 'accidents'
 
-SPIDER_MODULES = ['asnscraper.spiders']
-#NEWSPIDER_MODULE = 'asnscraper.spiders'
+SPIDER_MODULES = ['accidents.spiders']
+#NEWSPIDER_MODULE = 'accidents.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'teste (+http://www.yourdomain.com)'
@@ -72,9 +72,9 @@ TELNETCONSOLE_ENABLED = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
- 'asnscraper.pipelines.AirportPipeline': 200,
- 'asnscraper.pipelines.DisasterPipeline': 300,
- 'asnscraper.pipelines.ExportPipeline': 1000
+ 'accidents.pipelines.AirportPipeline': 200,
+ 'accidents.pipelines.DisasterPipeline': 300,
+ 'accidents.pipelines.ExportPipeline': 1000
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -8,7 +8,7 @@
 # decompyle3 version 3.3.2
 # Python bytecode 3.8 (3413)
 # Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
-# Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\asnscraper\asnscraper\pipelines.py
+# Embedded file name: C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\accidents\accidents\pipelines.py
 # Compiled at: 2020-08-25 23:10:47
 # Size of source mod 2**32: 4778 bytes
 
@@ -16,7 +16,7 @@ import os.path
 from datetime import timedelta as td
 from scrapy.exporters import CsvItemExporter
 from scrapy.exceptions import DropItem
-from asnscraper.items import Disaster, DisasterRaw, Airport, AirportRaw
+from accidents.items import Disaster, DisasterRaw, Airport, AirportRaw
 
 import re
 
