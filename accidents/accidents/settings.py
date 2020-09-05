@@ -1,22 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for teste project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://doc.scrapy.org/en/latest/topics/settings.html
-#     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-
-# decompyle3 version 3.3.2
-# Python bytecode 3.8 (3413)
-# Decompiled from: Python 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
-# Embedded file name:
-#   C:\Users\bdzp\Pessoal\software\python\projetos\asn-scraper\accidents\accidents\settings.py
-# Compiled at: 2020-08-25 22:39:49
-# Size of source mod 2**32: 3206 bytes
-
 BOT_NAME = 'accidents'
 
 SPIDER_MODULES = ['accidents.spiders']
@@ -101,5 +84,3 @@ HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 # Logging stuff
 #LOG_ENABLED = False
 LOG_LEVEL = 'WARNING'
-
-# okay decompiling __pycache__\settings.cpython-38.pyc
